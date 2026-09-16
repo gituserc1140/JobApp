@@ -5,7 +5,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-DB_PATH = Path(__file__).resolve().parents[1] / "data" / "careeros.db"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DB_PATH = REPO_ROOT / "careeros" / "data" / "careeros.db"
 STATUSES = ["saved", "applied", "interview", "assessment", "offer", "rejected"]
 
 

@@ -39,13 +39,8 @@ st.markdown("### Skill Trends")
 all_text = " ".join((df["title"].fillna("") + " " + df["description"].fillna(" ")).tolist()).lower()
 keywords = re.findall(r"[a-zA-Z\+\#]{3,}", all_text)
 if keywords:
-    skill_df = (
-        pd.Series(keywords)
-        .value_counts()
-        .head(20)
-        .reset_index(name="mentions")
-        .rename(columns={"index": "skill"})
-    )
+    skill_df = pd.Series(keywords, name="skill").value_counts().head(20).reset_index()
+    skill_df.columns = ["skill", "mentions"]
     st.plotly_chart(px.bar(skill_df, x="skill", y="mentions", title="Top skill keywords"), use_container_width=True)
 else:
     st.info("Not enough job text to detect skill trends yet.")

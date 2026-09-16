@@ -28,15 +28,21 @@ def _match_score(cv_text: str, role_text: str) -> int:
 
 if st.button("Search jobs", type="primary"):
     results = []
-    try:
-        if "Remotive" in sources:
+    if "Remotive" in sources:
+        try:
             results.extend(remotive.search_jobs(keyword=keyword, location=location))
-        if "Adzuna" in sources:
+        except Exception as exc:
+            st.warning(f"Remotive search failed: {exc}")
+    if "Adzuna" in sources:
+        try:
             results.extend(adzuna.search_jobs(keyword=keyword, location=location, min_salary=int(min_salary) or None, remote=remote_only))
-        if "Reed" in sources:
+        except Exception as exc:
+            st.warning(f"Adzuna search failed: {exc}")
+    if "Reed" in sources:
+        try:
             results.extend(reed.search_jobs(keyword=keyword, location=location, min_salary=int(min_salary) or None, remote=remote_only))
-    except Exception as exc:
-        st.error(f"Search failed: {exc}")
+        except Exception as exc:
+            st.warning(f"Reed search failed: {exc}")
 
     if min_salary:
         results = [r for r in results if (r.get("salary") or 0) >= min_salary]
