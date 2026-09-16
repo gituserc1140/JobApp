@@ -17,6 +17,11 @@ CareerOS is a modular Streamlit career operating system for job discovery, CV op
 ## Project structure
 
 ```text
+app.py
+pages/
+  1_📊_Dashboard.py
+  2_🔎_Jobs.py
+  ...
 careeros/
   app.py
   pages/
@@ -61,7 +66,7 @@ pip install -r careeros/requirements.txt
 3. Run locally:
 
 ```bash
-streamlit run careeros/app.py
+streamlit run app.py
 ```
 
 ## Database
@@ -74,5 +79,5 @@ Tables:
 
 ## Streamlit Cloud deployment
 
-- Main file path: `careeros/app.py`
+- Main file path: `app.py`
 - Add environment variables in Streamlit Cloud Secrets.

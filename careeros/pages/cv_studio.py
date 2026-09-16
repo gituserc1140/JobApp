@@ -32,7 +32,10 @@ def to_pdf_bytes(text: str) -> bytes:
     for line in text.splitlines() or [text]:
         safe_line = re.sub(r"[^\x00-\x7F]+", " ", line)
         pdf.multi_cell(0, 6, safe_line)
-    return bytes(pdf.output(dest="S"))
+    raw = pdf.output(dest="S")
+    if isinstance(raw, (bytes, bytearray)):
+        return bytes(raw)
+    return raw.encode("latin-1")
 
 
 def to_docx_bytes(text: str) -> bytes:
