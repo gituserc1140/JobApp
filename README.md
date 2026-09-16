@@ -42,10 +42,12 @@ careeros/
 
 ## Setup
 
-1. Install dependencies:
+1. Install dependencies (root or module requirements both work):
 
 ```bash
 pip install -r requirements.txt
+# or
+pip install -r careeros/requirements.txt
 ```
 
 2. Configure environment variables:
@@ -72,6 +74,5 @@ Tables:
 
 ## Streamlit Cloud deployment
 
-- Repository: `gituserc1140/JobApp`
 - Main file path: `careeros/app.py`
 - Add environment variables in Streamlit Cloud Secrets.

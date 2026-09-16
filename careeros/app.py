@@ -1,13 +1,9 @@
-import sys
-from pathlib import Path
-
 import streamlit as st
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
-
-from careeros.services.database import get_application_stats, init_db, list_saved_jobs
+try:
+    from careeros.services.database import get_application_stats, init_db, list_saved_jobs
+except ModuleNotFoundError:
+    from services.database import get_application_stats, init_db, list_saved_jobs
 
 
 def main() -> None:

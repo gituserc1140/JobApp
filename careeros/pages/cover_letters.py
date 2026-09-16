@@ -1,4 +1,7 @@
 import streamlit as st
+from docx import Document
+from pypdf import PdfReader
+from io import BytesIO
 
 from careeros.services.openrouter import generate_text
 
@@ -7,9 +10,22 @@ st.title("✉️ Cover Letter Generator")
 if "cv_text" not in st.session_state:
     st.session_state["cv_text"] = ""
 
-cv_upload = st.file_uploader("Upload CV (optional)", type=["txt"], key="cover_cv")
+def _extract_text(uploaded_file) -> str:
+    name = uploaded_file.name.lower()
+    if name.endswith(".txt"):
+        return uploaded_file.getvalue().decode("utf-8", errors="ignore")
+    if name.endswith(".pdf"):
+        pdf = PdfReader(BytesIO(uploaded_file.getvalue()))
+        return "\n".join(page.extract_text() or "" for page in pdf.pages)
+    if name.endswith(".docx"):
+        doc = Document(BytesIO(uploaded_file.getvalue()))
+        return "\n".join(p.text for p in doc.paragraphs)
+    return uploaded_file.getvalue().decode("utf-8", errors="ignore")
+
+
+cv_upload = st.file_uploader("Upload CV (optional)", type=["txt", "pdf", "docx"], key="cover_cv")
 if cv_upload:
-    st.session_state["cv_text"] = cv_upload.getvalue().decode("utf-8", errors="ignore")
+    st.session_state["cv_text"] = _extract_text(cv_upload)
 
 job_desc = st.text_area("Paste job description", height=250)
 
