@@ -38,11 +38,14 @@ st.plotly_chart(px.bar(loc, x="location", y="size", title="Top locations"), use_
 st.markdown("### Skill Trends")
 all_text = " ".join((df["title"].fillna("") + " " + df["description"].fillna(" ")).tolist()).lower()
 keywords = re.findall(r"[a-zA-Z\+\#]{3,}", all_text)
-skill_df = (
-    pd.Series(keywords)
-    .value_counts()
-    .head(20)
-    .reset_index(name="mentions")
-    .rename(columns={"index": "skill"})
-)
-st.plotly_chart(px.bar(skill_df, x="skill", y="mentions", title="Top skill keywords"), use_container_width=True)
+if keywords:
+    skill_df = (
+        pd.Series(keywords)
+        .value_counts()
+        .head(20)
+        .reset_index(name="mentions")
+        .rename(columns={"index": "skill"})
+    )
+    st.plotly_chart(px.bar(skill_df, x="skill", y="mentions", title="Top skill keywords"), use_container_width=True)
+else:
+    st.info("Not enough job text to detect skill trends yet.")

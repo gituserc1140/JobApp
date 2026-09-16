@@ -29,10 +29,18 @@ def init_db() -> None:
                 url TEXT,
                 source TEXT,
                 description TEXT,
-                date_saved TEXT NOT NULL
+                date_saved TEXT NOT NULL,
+                date_updated TEXT NOT NULL
             )
             """
         )
+        cols = {
+            row["name"]
+            for row in conn.execute("PRAGMA table_info(jobs)").fetchall()
+        }
+        if "date_updated" not in cols:
+            conn.execute("ALTER TABLE jobs ADD COLUMN date_updated TEXT")
+            conn.execute("UPDATE jobs SET date_updated = date_saved WHERE date_updated IS NULL")
         conn.execute(
             """
             CREATE TABLE IF NOT EXISTS applications (
@@ -52,8 +60,8 @@ def save_job(job: dict[str, Any]) -> None:
     with _conn() as conn:
         conn.execute(
             """
-            INSERT INTO jobs (id, title, company, location, salary, url, source, description, date_saved)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO jobs (id, title, company, location, salary, url, source, description, date_saved, date_updated)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
                 title=excluded.title,
                 company=excluded.company,
@@ -62,7 +70,7 @@ def save_job(job: dict[str, Any]) -> None:
                 url=excluded.url,
                 source=excluded.source,
                 description=excluded.description,
-                date_saved=excluded.date_saved
+                date_updated=excluded.date_updated
             """,
             (
                 str(job.get("id", "")),
@@ -74,6 +82,7 @@ def save_job(job: dict[str, Any]) -> None:
                 job.get("source", ""),
                 job.get("description", ""),
                 now,
+                now,
             ),
         )
 
@@ -82,9 +91,9 @@ def list_saved_jobs(limit: int = 200) -> list[dict[str, Any]]:
     with _conn() as conn:
         rows = conn.execute(
             """
-            SELECT id, title, company, location, salary, url, source, description, date_saved
+            SELECT id, title, company, location, salary, url, source, description, date_saved, date_updated
             FROM jobs
-            ORDER BY date_saved DESC
+            ORDER BY date_updated DESC
             LIMIT ?
             """,
             (limit,),

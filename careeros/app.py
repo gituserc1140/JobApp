@@ -1,8 +1,8 @@
 import streamlit as st
 
-try:
+if __package__:
     from careeros.services.database import get_application_stats, init_db, list_saved_jobs
-except ModuleNotFoundError:
+else:
     from services.database import get_application_stats, init_db, list_saved_jobs
 
 
