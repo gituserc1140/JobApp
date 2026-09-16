@@ -2,7 +2,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from careeros.services.database import get_application_stats, list_applications, list_saved_jobs
+from careeros.services.database import get_application_stats, init_db, list_applications, list_saved_jobs
+
+init_db()
 
 st.title("📊 Dashboard")
 

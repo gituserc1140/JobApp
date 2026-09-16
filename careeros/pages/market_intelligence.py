@@ -4,10 +4,11 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from careeros.services.database import list_saved_jobs
+from careeros.services.database import init_db, list_saved_jobs
 
 st.title("📈 Market Intelligence")
 
+init_db()
 jobs = list_saved_jobs(limit=1000)
 if not jobs:
     st.info("Save jobs first to unlock market insights.")

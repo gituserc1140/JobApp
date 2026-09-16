@@ -1,9 +1,10 @@
 import pandas as pd
 import streamlit as st
 
-from careeros.services.database import STATUSES, add_application, list_applications, update_status
+from careeros.services.database import STATUSES, add_application, init_db, list_applications, update_status
 
 st.title("📌 Application Tracker")
+init_db()
 
 with st.form("add_application"):
     company = st.text_input("Company")

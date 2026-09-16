@@ -4,9 +4,10 @@ import pandas as pd
 import streamlit as st
 
 from careeros.services import adzuna, reed, remotive
-from careeros.services.database import save_job
+from careeros.services.database import init_db, save_job
 
 st.title("🔎 Jobs Explorer")
+init_db()
 
 keyword = st.text_input("Keyword", placeholder="Product Manager, UX Designer, Data Analyst...")
 location = st.text_input("Location", placeholder="London, New York, Remote...")
