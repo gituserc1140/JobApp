@@ -22,10 +22,14 @@ if st.button("Generate LinkedIn assets", type="primary"):
             "keywords": keywords,
             "experience": experience,
         }
+        st.session_state["linkedin_headline"] = headline
+        st.session_state["linkedin_about"] = about
+        st.session_state["linkedin_keywords"] = keywords
+        st.session_state["linkedin_experience"] = experience
 
 assets = st.session_state.get("linkedin_assets")
 if assets:
-    st.text_input("Headline", assets["headline"])
-    st.text_area("About", assets["about"], height=170)
-    st.text_area("Keywords", assets["keywords"], height=120)
-    st.text_area("Optimized Experience", assets["experience"], height=220)
+    st.text_input("Headline", key="linkedin_headline")
+    st.text_area("About", key="linkedin_about", height=170)
+    st.text_area("Keywords", key="linkedin_keywords", height=120)
+    st.text_area("Optimized Experience", key="linkedin_experience", height=220)

@@ -61,7 +61,8 @@ def save_job(job: dict[str, Any]) -> None:
                 salary=excluded.salary,
                 url=excluded.url,
                 source=excluded.source,
-                description=excluded.description
+                description=excluded.description,
+                date_saved=excluded.date_saved
             """,
             (
                 str(job.get("id", "")),

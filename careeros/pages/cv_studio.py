@@ -65,10 +65,13 @@ if st.button("Generate role-specific CV", type="primary"):
         ai_text = generate_text(prompt)
         generated = ai_text or f"{role_type} CV Version\n\n{base_cv}"
         st.session_state["generated_cv"] = generated
+        st.session_state["generated_cv_text"] = generated
 
 if st.session_state.get("generated_cv"):
-    output = st.session_state["generated_cv"]
-    st.text_area("Generated CV", output, height=320)
+    if "generated_cv_text" not in st.session_state:
+        st.session_state["generated_cv_text"] = st.session_state["generated_cv"]
+    st.text_area("Generated CV", key="generated_cv_text", height=320)
+    output = st.session_state["generated_cv_text"]
 
     st.download_button("Export PDF", data=to_pdf_bytes(output), file_name=f"cv_{role_type.lower().replace(' ', '_')}.pdf", mime="application/pdf")
     st.download_button("Export DOCX", data=to_docx_bytes(output), file_name=f"cv_{role_type.lower().replace(' ', '_')}.docx", mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document")

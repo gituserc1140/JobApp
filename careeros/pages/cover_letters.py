@@ -40,8 +40,11 @@ if st.button("Generate cover letter", type="primary"):
         )
         output = generate_text(prompt) or "Dear Hiring Manager,\n\nI am excited to apply for this role..."
         st.session_state["cover_letter"] = output
+        st.session_state["cover_letter_text"] = output
 
 if st.session_state.get("cover_letter"):
-    text = st.session_state["cover_letter"]
-    st.text_area("Cover Letter", text, height=320)
+    if "cover_letter_text" not in st.session_state:
+        st.session_state["cover_letter_text"] = st.session_state["cover_letter"]
+    st.text_area("Cover Letter", key="cover_letter_text", height=320)
+    text = st.session_state["cover_letter_text"]
     st.download_button("Download TXT", text, file_name="cover_letter.txt")
