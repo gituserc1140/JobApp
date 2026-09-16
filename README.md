@@ -74,7 +74,7 @@ streamlit run app.py
 SQLite database is auto-created at `careeros/data/careeros.db`.
 
 Tables:
-- `jobs(id, title, company, location, salary, url, source, description, date_saved)`
+- `jobs(id, title, company, location, salary, url, source, description, date_saved, date_updated)`
 - `applications(id, company, job_title, status, notes, date_created)`
 
 ## Streamlit Cloud deployment

@@ -30,7 +30,7 @@ def init_db() -> None:
                 source TEXT,
                 description TEXT,
                 date_saved TEXT NOT NULL,
-                date_updated TEXT NOT NULL
+                date_updated TEXT
             )
             """
         )
@@ -93,7 +93,7 @@ def list_saved_jobs(limit: int = 200) -> list[dict[str, Any]]:
             """
             SELECT id, title, company, location, salary, url, source, description, date_saved, date_updated
             FROM jobs
-            ORDER BY date_updated DESC
+            ORDER BY COALESCE(date_updated, date_saved) DESC
             LIMIT ?
             """,
             (limit,),

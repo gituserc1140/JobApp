@@ -1,9 +1,14 @@
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-if __package__:
-    from careeros.services.database import get_application_stats, init_db, list_saved_jobs
-else:
-    from services.database import get_application_stats, init_db, list_saved_jobs
+if __package__ in (None, ""):
+    repo_root = Path(__file__).resolve().parents[1]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+
+from careeros.services.database import get_application_stats, init_db, list_saved_jobs
 
 
 def main() -> None:
