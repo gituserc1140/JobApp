@@ -1,61 +1,77 @@
-# Micro-app template
+# CareerOS
 
-This repository is a minimal, generic micro-app template built with Streamlit.
-It preserves a simple architecture intended to be easy to adapt for any
-API-driven micro-application.
+CareerOS is a modular Streamlit career operating system for job discovery, CV optimization, application tracking, and AI-assisted career planning.
 
-Contents
-- app.py — Streamlit entrypoint that gathers minimal user inputs and calls api_client.fetch_data()
-- api_client.py — API client module with a `make_request()` helper and a minimal `fetch_data()` example
-- ui.py — UI layout module that renders data using Streamlit
-- config/ — configuration module with placeholder settings
-- requirements.txt — minimal dependencies
+## Features
 
-Quick start
-1. Install dependencies
-   pip install -r requirements.txt
+- Dashboard with KPI cards and analytics
+- Multi-source job search (Adzuna, Reed, Remotive) with filtering and save/match actions
+- CV Studio: upload/parse CV, generate role-tailored versions, export PDF and DOCX
+- Cover letter generation from CV + job description
+- Skill gap analysis and learning path suggestions
+- Market intelligence from saved jobs (salary, role, location, employer, skill trends)
+- Application tracker with status updates and CSV export
+- AI coach for career chat, CV review, strategy, and interview advice
+- LinkedIn profile optimization
 
-2. Run locally
-   streamlit run app.py
+## Project structure
 
-Using the template
-- The primary integration point is api_client.fetch_data(). Replace the placeholder
-  implementation with calls to your API, including authentication, pagination,
-  and error handling. Keep fetch_data() independent of Streamlit so it remains
-  testable and reusable.
+```text
+careeros/
+  app.py
+  pages/
+    dashboard.py
+    jobs.py
+    cv_studio.py
+    cover_letters.py
+    skill_gap.py
+    market_intelligence.py
+    application_tracker.py
+    ai_coach.py
+    linkedin_optimizer.py
+  services/
+    adzuna.py
+    reed.py
+    remotive.py
+    openrouter.py
+    database.py
+  data/
+  assets/
+  requirements.txt
+```
 
-- config/settings.py contains default values for API_BASE_URL and API_KEY. You
-  can set these using environment variables or provide values at runtime via
-  the Streamlit app input fields.
+## Setup
 
-- ui.py contains simple rendering logic with Streamlit. Modify or replace it to
-  match your UI needs (components, layout, charts, etc.).
+1. Install dependencies:
 
-How to plug in a new API
-1. Update config/settings.py or set environment variables:
-   - API_BASE_URL: base URL for your API
-   - API_KEY: optional API key (alternatively, prompt users for the key in the UI)
+```bash
+pip install -r requirements.txt
+```
 
-2. Implement the API calls in api_client.fetch_data() (or add helper functions):
-   - Use the make_request() helper for consistent URL building and timeouts
-   - Add authentication (bearer tokens, API keys, custom headers) as needed
-   - Parse and return a plain Python dict with a shape the UI expects
+2. Configure environment variables:
 
-3. Adjust the UI (ui.py) and app behavior (app.py) to pass parameters and show
-   the results in a user-friendly way.
+- `OPENROUTER_API_KEY`
+- `ADZUNA_APP_ID`
+- `ADZUNA_APP_KEY`
+- `REED_API_KEY`
+- optional: `OPENROUTER_MODEL`
 
-Extending the template
-- Add tests for api_client.fetch_data() and UI rendering logic.
-- Add a Dockerfile or GitHub Actions workflow for CI and deployment.
-- Replace the placeholder items with richer domain models and components.
+3. Run locally:
 
-License
-Add a LICENSE file appropriate for your project.
+```bash
+streamlit run careeros/app.py
+```
 
-Example Prompt 
+## Database
 
--lets refactor this repo & streamlit app to work with "api and documentation link" so the end user can insert an api key on the front end and interact with the app.
+SQLite database is auto-created at `careeros/data/careeros.db`.
 
-Example Prompt 2
+Tables:
+- `jobs(id, title, company, location, salary, url, source, description, date_saved)`
+- `applications(id, company, job_title, status, notes, date_created)`
 
--Lets use this app repo "Insert App Repo link" as a reference for the streamlit UI design and repo UI design & description but dont copy the architecture or description make it relevant to the brand of the API "insert reference".
+## Streamlit Cloud deployment
+
+- Repository: `gituserc1140/JobApp`
+- Main file path: `careeros/app.py`
+- Add environment variables in Streamlit Cloud Secrets.
